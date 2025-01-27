@@ -1,25 +1,59 @@
-import {BuildOptions} from "./types/config";
-import webpack from "webpack";
-import path from "path";
-import {buildPlugins} from "./buildPlugins";
-import {buildLoaders} from "./buildLoaders";
-import {buildResolvers} from "./buildResolvers";
+// Импортируем интерфейс BuildOptions для строгой типизации параметров сборки
+import { BuildOptions } from "./types/config";
 
+// Импортируем Webpack для использования типов и создания конфигурации
+import webpack from "webpack";
+
+// Импортируем функции для настройки Webpack
+import { buildPlugins } from "./buildPlugins"; // Для настройки плагинов
+import { buildLoaders } from "./buildLoaders"; // Для настройки загрузчиков
+import { buildResolvers } from "./buildResolvers"; // Для настройки резолвера модулей
+import { buildDevServer } from "./buildDevServer"; // Для настройки DevServer
+
+// Функция для построения полной конфигурации Webpack
+import type { Configuration as WebpackConfiguration } from 'webpack';
+import type { Configuration as DevServerConfiguration } from "webpack-dev-server";
+
+// Определяем тип конфигурации
 export function buildWebpackConfig(options: BuildOptions): webpack.Configuration {
-    const {paths, mode} = options;
+    // Деструктурируем необходимые параметры из объекта options
+    const { paths, mode, isDev } = options;
 
     return {
-        mode: mode,
+        // Устанавливаем режим сборки: 'development' или 'production'
+        mode,
+
+        // Точка входа в приложение — главный файл
         entry: paths.entry,
+
+        // Настройка выходных файлов сборки
         output: {
+            // Шаблон имени файлов (имя входного файла + хэш содержимого)
             filename: "[name].[contenthash].js",
+
+            // Папка, в которую будут собираться файлы
             path: paths.build,
-            clean: true
+
+            // Автоматическая очистка папки сборки перед новой сборкой
+            clean: true,
         },
+
+        // Плагины, которые будут использоваться Webpack
         plugins: buildPlugins(options),
+
+        // Настройка модулей (правила обработки файлов)
         module: {
+            // Массив правил для загрузчиков
             rules: buildLoaders(),
         },
+
+        // Настройка резолвера модулей (расширения файлов, пути)
         resolve: buildResolvers(),
+
+        // Генерация source map только в режиме разработки (для отладки)
+        devtool: isDev ? 'inline-source-map' : undefined,
+
+        // Настройка Webpack DevServer (если режим разработки)
+        devServer: isDev ? buildDevServer(options) : undefined,
     }
 }
