@@ -1,2 +1,7 @@
-// Оставляем пустым или добавляем только необходимые декларации
-// TypeScript будет использовать встроенные определения типов 
+declare module '*.scss' {
+    interface IClassNames {
+        [className: string]: string
+    }
+    const classnames: IClassNames;
+    export = classnames;
+}

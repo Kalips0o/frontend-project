@@ -1,39 +1,56 @@
-// Импортируем модуль webpack для использования типов и функций, связанных с Webpack
+// Импортируем Webpack для использования его типов и интерфейсов
 import webpack from "webpack";
 
-// Экспортируем функцию buildLoaders, которая возвращает массив правил загрузчиков для Webpack
-export function buildLoaders(): webpack.RuleSetRule[] {
+// Импортируем плагин MiniCssExtractPlugin для извлечения CSS в отдельные файлы
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
-    // Определяем загрузчик для файлов TypeScript
+// Импортируем тип BuildOptions, который содержит параметры конфигурации сборки
+import { BuildOptions } from "./types/config";
+
+// Экспортируем функцию buildLoaders, которая возвращает массив настроек загрузчиков для Webpack
+export function buildLoaders({ isDev }: BuildOptions): webpack.RuleSetRule[] {
+
+    // Конфигурация для загрузки CSS и SCSS файлов
+    const cssLoader = {
+        // Указываем регулярное выражение для файлов .scss и .sass
+        test: /\.s[ac]ss$/i,
+        // Настраиваем последовательность загрузчиков
+        use: [
+            // В режиме разработки используем 'style-loader' для внедрения стилей в DOM
+            // В режиме продакшн используем MiniCssExtractPlugin.loader для извлечения CSS в отдельный файл
+            isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+            {
+                // Подключаем css-loader для обработки CSS-импортов
+                loader: 'css-loader',
+                options: {
+                    // Настраиваем модули CSS (CSS Modules)
+                    modules: {
+                        // Автоматически активируем CSS Modules для файлов с ".module." в имени
+                        auto: (resPath: string) => Boolean(resPath.includes('.module.')),
+                        // Формат имен CSS-классов: полный путь и имя файла в режиме разработки,
+                        // а в режиме продакшн — короткий хэш
+                        localIdentName: isDev ? '[path][name]__[local]' : '[hash:base64:8]',
+                    },
+                }
+            },
+            // Используем sass-loader для преобразования SCSS/SASS в CSS
+            'sass-loader',
+        ]
+    };
+
+    // Конфигурация для загрузки TypeScript файлов
     const typescriptLoader = {
-        // Свойство `test` указывает регулярное выражение для поиска файлов,
-        // которые должны обрабатываться этим загрузчиком. Здесь это файлы с расширением .ts и .tsx.
+        // Указываем регулярное выражение для файлов .ts и .tsx
         test: /\.tsx?$/,
-
-        // Свойство `use` указывает, какой загрузчик использовать.
-        // В данном случае используется `ts-loader`, который компилирует TypeScript в JavaScript.
+        // Используем ts-loader для компиляции TypeScript в JavaScript
         use: 'ts-loader',
-
-        // Свойство `exclude` указывает папки или файлы, которые нужно исключить из обработки.
-        // Это позволяет избежать обработки файлов из папки `node_modules` для повышения производительности.
+        // Исключаем папку node_modules, чтобы ускорить процесс сборки
         exclude: /node_modules/,
     };
 
-    const cssLoader = {
-        test: /\.s[ac]ss$/i,
-        use: [
-            // Creates `style` nodes from js strings
-            'style-loader',
-            // Translates CSS into CommonJS
-            'css-loader',
-            // Compiles Sass to CSS
-            'sass-loader',
-        ]
-    }
-
-    // Возвращаем массив правил загрузчиков
+    // Возвращаем массив загрузчиков
     return [
-        typescriptLoader,
-        cssLoader,
-    ]
+        typescriptLoader, // Загрузчик для TypeScript
+        cssLoader,        // Загрузчик для CSS/SCSS
+    ];
 }

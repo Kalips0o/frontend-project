@@ -10,9 +10,6 @@ import { buildLoaders } from "./buildLoaders"; // Для настройки за
 import { buildResolvers } from "./buildResolvers"; // Для настройки резолвера модулей
 import { buildDevServer } from "./buildDevServer"; // Для настройки DevServer
 
-// Функция для построения полной конфигурации Webpack
-import type { Configuration as WebpackConfiguration } from 'webpack';
-import type { Configuration as DevServerConfiguration } from "webpack-dev-server";
 
 // Определяем тип конфигурации
 export function buildWebpackConfig(options: BuildOptions): webpack.Configuration {
@@ -44,7 +41,7 @@ export function buildWebpackConfig(options: BuildOptions): webpack.Configuration
         // Настройка модулей (правила обработки файлов)
         module: {
             // Массив правил для загрузчиков
-            rules: buildLoaders(),
+            rules: buildLoaders(options),
         },
 
         // Настройка резолвера модулей (расширения файлов, пути)
