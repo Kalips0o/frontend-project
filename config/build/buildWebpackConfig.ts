@@ -45,7 +45,7 @@ export function buildWebpackConfig(options: BuildOptions): webpack.Configuration
         },
 
         // Настройка резолвера модулей (расширения файлов, пути)
-        resolve: buildResolvers(),
+        resolve: buildResolvers(options),
 
         // Генерация source map только в режиме разработки (для отладки)
         devtool: isDev ? 'inline-source-map' : undefined,
