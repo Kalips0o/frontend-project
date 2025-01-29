@@ -16,5 +16,6 @@ export function buildDevServer(options: BuildOptions): DevServerConfiguration {
 
         // Автоматически открывать браузер при запуске dev-сервера.
         open: true,
+        historyApiFallback: true,
     }
 }
