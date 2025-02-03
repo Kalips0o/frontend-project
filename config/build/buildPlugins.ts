@@ -24,6 +24,9 @@ export function buildPlugins({ paths, isDev }: BuildOptions): webpack.WebpackPlu
         new MiniCssExtractPlugin({
             filename: 'css/[name].[contenthash:8].css', // Имя и содержимое CSS файлов
             chunkFilename: 'css/[name].[contenthash:8].css', // Имя и содержимое для чанков CSS
+        }),
+        new webpack.DefinePlugin({
+            __IS_DEV__: JSON.stringify(isDev),
         })
     ];
 }
