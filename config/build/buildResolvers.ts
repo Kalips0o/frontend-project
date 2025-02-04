@@ -1,6 +1,6 @@
 // Импортируем тип ResolveOptions из Webpack для строгой типизации возвращаемого значения
-import { ResolveOptions } from "webpack";
-import { BuildOptions } from "./types/config";
+import { ResolveOptions } from 'webpack';
+import { BuildOptions } from './types/config';
 
 // Экспортируем функцию buildResolvers, которая возвращает объект настроек для резолвера Webpack
 export function buildResolvers(options: BuildOptions): ResolveOptions {
@@ -13,6 +13,6 @@ export function buildResolvers(options: BuildOptions): ResolveOptions {
         mainFiles: ['index'],
         alias: {
             '@': options.paths.src,
-        }
+        },
     };
 }

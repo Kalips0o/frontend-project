@@ -1,15 +1,14 @@
 // Импортируем интерфейс BuildOptions для строгой типизации параметров сборки
-import { BuildOptions } from "./types/config";
+import webpack from 'webpack';
+import { BuildOptions } from './types/config';
 
 // Импортируем Webpack для использования типов и создания конфигурации
-import webpack from "webpack";
 
 // Импортируем функции для настройки Webpack
-import { buildPlugins } from "./buildPlugins"; // Для настройки плагинов
-import { buildLoaders } from "./buildLoaders"; // Для настройки загрузчиков
-import { buildResolvers } from "./buildResolvers"; // Для настройки резолвера модулей
-import { buildDevServer } from "./buildDevServer"; // Для настройки DevServer
-
+import { buildPlugins } from './buildPlugins'; // Для настройки плагинов
+import { buildLoaders } from './buildLoaders'; // Для настройки загрузчиков
+import { buildResolvers } from './buildResolvers'; // Для настройки резолвера модулей
+import { buildDevServer } from './buildDevServer'; // Для настройки DevServer
 
 // Определяем тип конфигурации
 export function buildWebpackConfig(options: BuildOptions): webpack.Configuration {
@@ -26,7 +25,7 @@ export function buildWebpackConfig(options: BuildOptions): webpack.Configuration
         // Настройка выходных файлов сборки
         output: {
             // Шаблон имени файлов (имя входного файла + хэш содержимого)
-            filename: "[name].[contenthash].js",
+            filename: '[name].[contenthash].js',
 
             // Папка, в которую будут собираться файлы
             path: paths.build,
@@ -52,5 +51,5 @@ export function buildWebpackConfig(options: BuildOptions): webpack.Configuration
 
         // Настройка Webpack DevServer (если режим разработки)
         devServer: isDev ? buildDevServer(options) : undefined,
-    }
+    };
 }

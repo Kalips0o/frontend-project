@@ -1,15 +1,15 @@
 // Импортируем HTMLWebpackPlugin для генерации HTML-файла на основе шаблона
-import HTMLWebpackPlugin from "html-webpack-plugin";
+import HTMLWebpackPlugin from 'html-webpack-plugin';
 
 // Импортируем модуль webpack для использования типов и встроенных плагинов
-import webpack from "webpack";
+import webpack from 'webpack';
 
 // Импортируем тип BuildOptions, который содержит параметры конфигурации сборки
-import {BuildOptions} from "./types/config";
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { BuildOptions } from './types/config';
 
 // Экспортируем функцию buildPlugins, которая возвращает массив плагинов для Webpack
-export function buildPlugins({paths, isDev}: BuildOptions): webpack.WebpackPluginInstance[] {
+export function buildPlugins({ paths, isDev }: BuildOptions): webpack.WebpackPluginInstance[] {
     return [
         // Создаем новый экземпляр HTMLWebpackPlugin
         // Он генерирует HTML-файл на основе шаблона, указанного в свойстве `template`
