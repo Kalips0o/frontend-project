@@ -7,9 +7,12 @@ import webpack from 'webpack';
 // Импортируем тип BuildOptions, который содержит параметры конфигурации сборки
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { BuildOptions } from './types/config';
+import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
+
 
 // Экспортируем функцию buildPlugins, которая возвращает массив плагинов для Webpack
 export function buildPlugins({ paths, isDev }: BuildOptions): webpack.WebpackPluginInstance[] {
+
     return [
         // Создаем новый экземпляр HTMLWebpackPlugin
         // Он генерирует HTML-файл на основе шаблона, указанного в свойстве `template`
@@ -29,5 +32,8 @@ export function buildPlugins({ paths, isDev }: BuildOptions): webpack.WebpackPlu
             __IS_DEV__: JSON.stringify(isDev),
         }),
         new webpack.HotModuleReplacementPlugin(),
+        new BundleAnalyzerPlugin({
+            openAnalyzer:false
+        })
     ];
 }
