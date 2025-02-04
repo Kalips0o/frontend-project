@@ -1,21 +1,21 @@
 .navbar {
-  width: 100%;
-  height: var(--navbar-height);
-  background: var(--inverted-bg-color);
-  display: flex;
-  align-items: center;
-  padding: 20px;
+    width: 100%;
+    height: var(--navbar-height);
+    background: var(--inverted-bg-color);
+    display: flex;
+    align-items: center;
+    padding: 20px;
 }
 
 .links {
-  margin-left: auto;
+    margin-left: auto;
 }
 
 .mainLink {
-  margin-right: 15px;
-  color: var(--navbar-link-color);
+    margin-right: 15px;
+    color: var(--navbar-link-color);
 }
 
 .link {
-  color: var(--navbar-link-color);
+    color: var(--navbar-link-color);
 }
