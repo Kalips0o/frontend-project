@@ -2,6 +2,7 @@ module.exports = {
     env: {
         browser: true,
         es2021: true,
+        jest: true,
     },
     extends: [
         'plugin:i18next/recommended',
@@ -38,6 +39,7 @@ module.exports = {
         'import/no-extraneous-dependencies': 'off',
         'no-underscore-dangle': 'off',
         'i18next/no-literal-string': ['warn', { markupOnly: true }],
+        'max-len': ['error', { code: 135, ignoreStrings: true, ignoreComments: true }],
     },
     globals: {
         __IS_DEV__: true,
