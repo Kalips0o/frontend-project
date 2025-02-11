@@ -1,4 +1,4 @@
-run-name: linting, testing, building
+run-name: Linting, testing, building
 on:
   push:
     branches: [ master ]
