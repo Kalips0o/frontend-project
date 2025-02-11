@@ -1,39 +1,30 @@
-// Импортируем HTMLWebpackPlugin для генерации HTML-файла на основе шаблона
-import HTMLWebpackPlugin from 'html-webpack-plugin';
-
-// Импортируем модуль webpack для использования типов и встроенных плагинов
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpack from 'webpack';
-
-// Импортируем тип BuildOptions, который содержит параметры конфигурации сборки
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { BuildOptions } from './types/config';
-import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
 
-
-// Экспортируем функцию buildPlugins, которая возвращает массив плагинов для Webpack
 export function buildPlugins({ paths, isDev }: BuildOptions): webpack.WebpackPluginInstance[] {
-
-    return [
-        // Создаем новый экземпляр HTMLWebpackPlugin
-        // Он генерирует HTML-файл на основе шаблона, указанного в свойстве `template`
-        new HTMLWebpackPlugin({
-            template: paths.html, // Путь к HTML-шаблону, переданный через параметры конфигурации
+    const plugins = [
+        new HtmlWebpackPlugin({
+            template: paths.html,
         }),
-
-        // Добавляем встроенный плагин Webpack для отображения прогресса сборки в терминале
         new webpack.ProgressPlugin(),
-
-        // Создаем экземпляр MiniCssExtractPlugin для извлечения CSS в отдельные файлы
         new MiniCssExtractPlugin({
-            filename: 'css/[name].[contenthash:8].css', // Имя и содержимое CSS файлов
-            chunkFilename: 'css/[name].[contenthash:8].css', // Имя и содержимое для чанков CSS
+            filename: 'css/[name].[contenthash:8].css',
+            chunkFilename: 'css/[name].[contenthash:8].css',
         }),
         new webpack.DefinePlugin({
             __IS_DEV__: JSON.stringify(isDev),
         }),
-        new webpack.HotModuleReplacementPlugin(),
-        new BundleAnalyzerPlugin({
-            openAnalyzer:false
-        })
     ];
+
+    if (isDev) {
+        plugins.push(new webpack.HotModuleReplacementPlugin());
+        plugins.push(new BundleAnalyzerPlugin({
+            openAnalyzer: false,
+        }));
+    }
+
+    return plugins;
 }
